@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CardioSense AI — Heart Risk Monitoring</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="wrapper">
+
+    <div class="alert-banner" id="alertBanner" style="display:none">
+      <span>💓 You haven't checked your heart health in a while! Take a quick check today.</span>
+      <button onclick="dismissAlert()">✕</button>
+    </div>
+
+    <header>
+      <div class="logo">
+        <div class="logo-icon">❤️</div>
+        <div class="logo-text">Cardio<span>Sense</span></div>
+      </div>
+      <div class="header-right">
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark/light mode"></button>
+        <button class="history-trigger-btn" onclick="openHistory()"> History</button>
+        </button>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+    </header>
+
+    <div class="hero">
+      <div class="hero-eyebrow">AI-Powered Analysis</div>
+      <h1>Cardiovascular <br/><em>Monitoring</em></h1>
+      <p class="hero-sub">Measure your vitals with a BP machine, enter them below, and get your personalised cardiovascular risk score instantly.</p>
+      <div class="pulse-row">
+        <div class="pulse-dot"></div>
+        <div class="pulse-line">
+          <span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <div class="pulse-dot" style="animation-delay:1s"></div>
+      </div>
+    </div>
+
+    <!-- ── How It Works Strip ── -->
+    <div class="how-strip">
+      <div class="how-step">
+        <div class="how-num">1</div>
+        <div class="how-text"><strong>Measure</strong><br/>Use a BP machine to get your BP & heart rate</div>
+      </div>
+      <div class="how-arrow">→</div>
+      <div class="how-step">
+        <div class="how-num">2</div>
+        <div class="how-text"><strong>Enter</strong><br/>Fill in your vitals and health details below</div>
+      </div>
+      <div class="how-arrow">→</div>
+      <div class="how-step">
+        <div class="how-num">3</div>
+        <div class="how-text"><strong>Analyze</strong><br/>AI predicts your cardiovascular risk score</div>
+      </div>
+      <div class="how-arrow">→</div>
+      <div class="how-step">
+        <div class="how-num">4</div>
+        <div class="how-text"><strong>Act</strong><br/>Get personalised advice from HeartGuard AI</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-inner">
+
+        <!-- LEFT: Form -->
+        <div>
+          <div class="section-label">Step 1 — Personal Details</div>
+          <div class="field-row">
+            <div class="field">
+              <label><span class="icon">🧑</span> Age</label>
+              <input type="number" id="age" placeholder="e.g. 45" min="1" max="120"/>
+            </div>
+            <div class="field">
+              <label><span class="icon">⚥</span> Gender</label>
+              <select id="gender" class="select-input">
+                <option value="">Select</option>
+                <option value="1">Male</option>
+                <option value="0">Female</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label><span class="icon">📏</span> Height (cm)</label>
+              <input type="number" id="height" placeholder="e.g. 170" min="100" max="250"/>
+            </div>
+            <div class="field">
+              <label><span class="icon">⚖️</span> Weight (kg)</label>
+              <input type="number" id="weight" placeholder="e.g. 70" min="20" max="300"/>
+            </div>
+          </div>
+
+          <div class="section-label" style="margin-top:20px">Step 2 — BP Machine Readings</div>
+
+          <div class="field-row">
+            <div class="field">
+              <label><span class="icon">🩺</span> Systolic BP</label>
+              <input type="number" id="systolic_bp" placeholder="e.g. 120" min="70" max="250"/>
+              <div class="hint">Upper number (mmHg)</div>
+            </div>
+            <div class="field">
+              <label><span class="icon">🩺</span> Diastolic BP</label>
+              <input type="number" id="diastolic_bp" placeholder="e.g. 80" min="40" max="150"/>
+              <div class="hint">Lower number (mmHg)</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label><span class="icon">💓</span> Heart Rate (BPM)</label>
+            <input type="number" id="heart_rate" placeholder="e.g. 72" min="30" max="220"/>
+            <div class="hint">From your BP machine or manual pulse check</div>
+          </div>
+
+          <div class="section-label" style="margin-top:20px">Step 3 — Health & Lifestyle</div>
+
+          <div class="field-row">
+            <div class="field">
+              <label><span class="icon">💉</span> Diabetes</label>
+              <select id="diabetes" class="select-input">
+                <option value="">Select</option>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+            </div>
+            <div class="field">
+              <label><span class="icon">🚬</span> Smoking</label>
+              <select id="smoking" class="select-input">
+                <option value="">Select</option>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label><span class="icon">🏃</span> Exercise Level</label>
+              <select id="exercise_level" class="select-input">
+                <option value="">Select</option>
+                <option value="0">Low (rarely exercise)</option>
+                <option value="1">Medium (1-3x/week)</option>
+                <option value="2">High (4+x/week)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label><span class="icon">🧬</span> Family History</label>
+              <select id="family_history" class="select-input">
+                <option value="">Select</option>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+              <div class="hint">Heart disease in family?</div>
+            </div>
+          </div>
+
+          <button class="btn" id="predictBtn" onclick="predict()">
+            ⚡ Analyze My Cardiovascular Risk
+          </button>
+          <div class="error-msg" id="errorMsg"></div>
+        </div>
+
+        <!-- RIGHT: Gauge -->
+        <div class="result-panel">
+          <div class="section-label">AI Risk Assessment</div>
+
+          <div class="gauge-container" id="gaugeContainer">
+            <div class="gauge-idle">
+              <div class="gauge-idle-icon">🫀</div>
+              <div class="gauge-idle-text">Awaiting analysis…</div>
+            </div>
+          </div>
+
+          <div class="bmi-strip" id="scoreStrip" style="display:none">
+            <div class="bmi-item">
+              <div class="bmi-val" id="scoreVal">—</div>
+              <div class="bmi-key">Risk Score</div>
+            </div>
+            <div class="bmi-item">
+              <div class="bmi-val" id="bmiVal">—</div>
+              <div class="bmi-key">BMI</div>
+            </div>
+            <div class="bmi-item">
+              <div class="bmi-val" id="bmiCat">—</div>
+              <div class="bmi-key">BMI Category</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- What-If Risk Simulator Panel -->
+    <div class="card" id="simulatorCard" style="display:none; margin-top:30px;">
+      <div class="card-inner">
+        <div class="section-label">🎯 What-If Risk Simulator</div>
+        <p style="color: var(--text2); margin: 10px 0 20px; font-size: 14px;">See how much your risk could drop with lifestyle changes:</p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px; border-radius: 8px; background: var(--bg2);">
+            <input type="checkbox" id="simQuitSmoking" onchange="runSimulation()">
+            🚬 Quit Smoking
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px; border-radius: 8px; background: var(--bg2);">
+            <input type="checkbox" id="simExercise" onchange="runSimulation()">
+            🏃 Exercise 4+x/week
+          </label>
+          
+          <div style="display: flex; gap: 8px;">
+            <label style="flex: 1;">
+              <div style="font-size: 12px; color: var(--text2); margin-bottom: 4px;">💪 Lose weight (lbs):</div>
+              <input type="range" id="simWeightLoss" min="0" max="50" step="5" oninput="runSimulation()" 
+                style="width: 100%; cursor: pointer;">
+              <div style="text-align: center; font-size: 12px; color: var(--accent);" id="weightLossDisplay">0 lbs</div>
+            </label>
+          </div>
+
+          <div style="display: flex; gap: 8px;">
+            <label style="flex: 1;">
+              <div style="font-size: 12px; color: var(--text2); margin-bottom: 4px;">🩺 Lower BP (mmHg):</div>
+              <input type="range" id="simBPReduction" min="0" max="40" step="5" oninput="runSimulation()"
+                style="width: 100%; cursor: pointer;">
+              <div style="text-align: center; font-size: 12px; color: var(--accent);" id="bpReductionDisplay">0 mmHg</div>
+            </label>
+          </div>
+        </div>
+
+        <div id="simulationResults" style="display: grid; gap: 10px;"></div>
+      </div>
+    </div>
+
+   <!-- 30-Day Action Plan Panel -->
+<div class="card" id="actionPlanCard" style="display:none; margin-top:30px;">
+  <div class="card-inner" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch;">
+
+    <!-- LEFT: Image fills full height -->
+    <div style="display: flex; flex-direction: column;">
+      <div class="section-label">📋 Your 30-Day Action Plan
+      <div style="flex: 1; position: relative; border-radius: 16px; overflow: hidden; min-height: 350px;">
+        </div>
+        <img
+          src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=700&q=80"
+          alt="Heart Health Action Plan"
+          style="
+            width: 50%;
+            height: 70%;
+            object-fit: contain;
+            position: fixed;
+            top: 0; left: 0;
+            border-radius: 16px;
+          "
+        />
+        <div style="
+          position: absolute; bottom: 0; left: 0; right: 0;
+          background: linear-gradient(transparent, rgba(10,15,30,0.88));
+          padding: 32px 20px 20px;
+          border-radius: 0 0 16px 16px;
+        ">
+          <div style="color: white; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 17px; margin-bottom: 5px;">
+            Your Heart. Your Plan.
+          </div>
+          <div style="color: rgba(255,255,255,0.72); font-size: 12px; line-height: 1.6;">
+            A personalised 30-day roadmap built around your unique cardiovascular risk profile.
+          </div>
+        </div>
+      </div>
+    </div>
+
+     <!-- RIGHT: Plan Content -->
+      <div style="position: relative;">
+        <div id="actionPlanContent" style="max-height: 400px; overflow-y: auto; padding: 15px; background: var(--bg2); border-radius: 12px; line-height: 1.6; font-size: 14px; white-space: pre-wrap;">
+          <div style="text-align: center; color: var(--text2);">⏳ Generating personalized plan...</div>
+        </div>
+        <button onclick="downloadActionPlan()" style="margin-top: 12px; padding: 10px 16px; background: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%;">
+          📥 Download Plan
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+    <!-- Risk Trajectory Predictor Panel -->
+    <div class="card" id="trajectoryCard" style="display:none; margin-top:30px;">
+      <div class="card-inner">
+        <div class="section-label">📈 90-Day Risk Trajectory</div>
+        
+        <div style="margin-bottom: 20px; padding: 15px; background: var(--bg2); border-radius: 12px; border-left: 4px solid var(--accent);">
+          <div style="font-size: 14px; font-weight: 600; color: var(--text1); margin-bottom: 5px;" id="trendSummary">—</div>
+          <div style="font-size: 13px; color: var(--text2);" id="trendDetail">Loading trajectory...</div>
+        </div>
+
+        <!-- Historical Chart -->
+        <div style="margin-bottom: 20px;">
+          <div style="font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 8px;">📊 Your Risk History (Last 10 checks)</div>
+          <svg id="trajectoryChart" style="width: 100%; height: 200px; border-radius: 8px; background: var(--bg2);"></svg>
+        </div>
+
+        <!-- Projection -->
+        <div style="display: grid; gap: 10px;">
+          <div style="font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 5px;">🔮 Projected Risk in Next 90 Days:</div>
+          <div id="trajectoryProjections" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chatbox -->
+    <div class="chat-section" id="chatSection">
+      <div class="chat-card">
+        <div class="chat-header">
+          <div class="chat-header-left">
+            <div class="chat-avatar">🛡️</div>
+            <div class="chat-header-info">
+              <div class="chat-name">HeartGuard AI</div>
+              <div class="chat-status"><div class="chat-status-dot"></div>Online — Ready to help</div>
+            </div>
+          </div>
+          <div class="chat-header-right">
+            <div class="chat-lang-toggle">
+              <button class="chat-lang-btn active" id="chatBtnEN" onclick="setChatLanguage('english')">🇬🇧 EN</button>
+              <button class="chat-lang-btn" id="chatBtnTW" onclick="setChatLanguage('akan')">🇬🇭 TW</button>
+            </div>
+            <button class="chat-close" onclick="closeChat()">✕</button>
+          </div>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-suggestions" id="chatSuggestions"></div>
+        <div class="chat-input-row">
+          <input type="text" class="chat-input" id="chatInput"
+            placeholder="Ask HeartGuard AI anything…"
+            onkeydown="if(event.key==='Enter') sendChat()"/>
+          <button class="chat-send-btn" id="chatSendBtn" onclick="sendChat()">➤</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="history-overlay" id="historyOverlay" onclick="closeHistory()"></div>
+    <div class="history-panel" id="historyPanel">
+      <div class="history-panel-header">
+        <div class="history-panel-title">
+          <div class="history-panel-icon">📊</div>
+          <div><h3>Health History</h3><p>Your past heart checks</p></div>
+        </div>
+        <button class="history-close-btn" onclick="closeHistory()">✕</button>
+      </div>
+      <div class="history-summary">
+        <div class="history-stat"><div class="h-val" id="totalChecks">0</div><div class="h-key">Total</div></div>
+        <div class="history-stat"><div class="h-val green" id="totalLow">0</div><div class="h-key">Low Risk</div></div>
+        <div class="history-stat"><div class="h-val red" id="totalHigh">0</div><div class="h-key">High Risk</div></div>
+      </div>
+      <div class="history-records" id="historyRecords">
+        <div class="history-empty"><div class="history-empty-icon">🫀</div><p>No records yet.<br/>Run your first prediction!</p></div>
+      </div>
+      <div class="history-panel-footer">
+        <button class="history-refresh-btn" onclick="loadRecords()">↻ Refresh Records</button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="big-footer">
+      <div class="footer-chips">
+        <div class="footer-chip">
+          <div class="footer-chip-icon">🤖</div>
+          <div class="footer-chip-title">Machine Learning</div>
+          <div class="footer-chip-body">Trained on 70,000 patient records with 80%+ accuracy.</div>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-chip">
+          <div class="footer-chip-icon">⚡</div>
+          <div class="footer-chip-title">Real-Time</div>
+          <div class="footer-chip-body">Instant risk score and personalised AI health advice.</div>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-chip">
+          <div class="footer-chip-icon">🔒</div>
+          <div class="footer-chip-title">Local & Private</div>
+          <div class="footer-chip-body">Data sent only to your local server. Nothing leaves your machine.</div>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-chip">
+          <div class="footer-chip-icon">🇬🇭</div>
+          <div class="footer-chip-title">Made in Ghana</div>
+          <div class="footer-chip-body">Built for Ghanaian communities with Akan language support.</div>
+        </div>
+      </div>
+      <div class="footer-hr"></div>
+      <div class="footer-bottom">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <div class="footer-logo-icon">❤️</div>
+            <span>Cardio<strong>Sense</strong> AI</span>
+          </div>
+          <p class="footer-tagline">AI-Powered Predictive Cardiovascular Risk Monitoring System</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-links-col">
+            <div class="footer-links-title">Project</div>
+            <a href="#">Final Year Project</a>
+            <a href="#">How It Works</a>
+            <a href="#">About the AI</a>
+          </div>
+          <div class="footer-links-col">
+            <div class="footer-links-title">Technology</div>
+            <a href="#">Logistic Regression</a>
+            <a href="#">Flask API</a>
+            <a href="#">HeartGuard AI</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <span>&copy; 2025 CardioSense AI — Final Year Project</span>
+        <span>For academic demonstration purposes only. Not a medical device.</span>
+      </div>
+    </footer>
+
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

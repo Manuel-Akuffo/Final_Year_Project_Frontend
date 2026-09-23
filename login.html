@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CardioSense AI — Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent:  #c0392b;
+      --accent2: #e74c3c;
+      --green:   #1a9e6e;
+      --navy:    #1a2b4a;
+      --text2:   #4a5568;
+      --muted:   #8896a8;
+      --border:  rgba(0,0,0,0.08);
+      --glow:    rgba(192,57,43,0.18);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      background: #f5f7fa;
+    }
+
+    .login-page {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    /* ── LEFT IMAGE SIDE ── */
+    .login-image-side {
+      position: relative;
+      background-image: url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&q=80');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: flex-end;
+      padding: 48px;
+      overflow: hidden;
+    }
+
+    .login-image-side::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, rgba(10,15,30,0.55) 0%, rgba(192,57,43,0.35) 60%, rgba(10,15,30,0.85) 100%);
+      z-index: 0;
+    }
+
+    .image-content {
+      position: relative;
+      z-index: 1;
+      color: white;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+
+    .brand-icon {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, #c0392b, #e74c3c);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+
+    .brand-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 20px; color: white;
+    }
+
+    .brand-name span { color: #ff8f85; }
+
+    .image-tagline {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(24px, 3vw, 40px);
+      line-height: 1.15;
+      letter-spacing: -1px;
+      margin-bottom: 14px;
+    }
+
+    .image-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.6;
+      max-width: 300px;
+      margin-bottom: 28px;
+    }
+
+    .image-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .stat-pill {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 100px;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: white;
+    }
+
+    /* ── RIGHT FORM SIDE ── */
+    .login-form-side {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 40px;
+      overflow-y: auto;
+      background: #f5f7fa;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 380px;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .form-header { margin-bottom: 28px; }
+
+    .form-header h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 26px;
+      color: var(--navy); letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .form-header p { font-size: 13px; color: var(--muted); }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      background: rgba(0,0,0,0.06);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 24px;
+      gap: 4px;
+    }
+
+    .tab {
+      flex: 1; padding: 10px;
+      border: none; border-radius: 9px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 13px;
+      cursor: pointer; transition: all 0.2s;
+      background: transparent; color: var(--muted);
+    }
+
+    .tab.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white;
+      box-shadow: 0 4px 14px var(--glow);
+    }
+
+    /* Field */
+    .field { margin-bottom: 16px; }
+
+    .field label {
+      display: block;
+      font-size: 11px; font-weight: 700;
+      color: var(--text2); margin-bottom: 7px;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+
+    .field input {
+      width: 100%;
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 16px;
+      font-size: 15px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--navy); outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .field input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--glow);
+    }
+
+    .field input::placeholder { color: var(--muted); opacity: 0.6; }
+
+    /* PIN */
+    .pin-field { margin-bottom: 16px; }
+
+    .pin-field label {
+      display: block;
+      font-size: 11px; font-weight: 700;
+      color: var(--text2); margin-bottom: 10px;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+
+    .pin-dots {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .pin-dot {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 2px solid #ddd;
+      background: white;
+      transition: all 0.2s;
+    }
+
+    .pin-dot.filled {
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 8px var(--glow);
+    }
+
+    .pin-keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      max-width: 220px;
+      margin: 0 auto;
+    }
+
+    .pin-key {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 18px;
+      color: var(--navy);
+      cursor: pointer; text-align: center;
+      transition: all 0.15s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      user-select: none;
+    }
+
+    .pin-key:hover { background: #f0f4f8; transform: translateY(-1px); }
+    .pin-key:active { transform: scale(0.93); background: var(--accent); color: white; }
+
+    .pin-key.del {
+      background: rgba(192,57,43,0.06);
+      border-color: rgba(192,57,43,0.15);
+      color: var(--accent); font-size: 14px;
+    }
+
+    .pin-key.zero { grid-column: 2; }
+
+    /* Button */
+    .btn {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none; border-radius: 12px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 15px;
+      color: white; cursor: pointer;
+      margin-top: 18px;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 8px 24px var(--glow);
+    }
+
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 14px 32px var(--glow); }
+    .btn:active { transform: translateY(0); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    /* Messages */
+    .msg {
+      padding: 12px 16px; border-radius: 10px;
+      font-size: 13px; margin-top: 12px;
+      display: none; font-weight: 500;
+    }
+
+    .msg.error {
+      background: rgba(192,57,43,0.07);
+      border: 1px solid rgba(192,57,43,0.2);
+      color: var(--accent);
+    }
+
+    .msg.success {
+      background: rgba(26,158,110,0.07);
+      border: 1px solid rgba(26,158,110,0.2);
+      color: var(--green);
+    }
+
+    .form-footer {
+      text-align: center; margin-top: 20px;
+      font-size: 11px; color: var(--muted);
+    }
+
+    @media (max-width: 768px) {
+      .login-page { grid-template-columns: 1fr; }
+      .login-image-side { display: none; }
+      .login-form-side { padding: 32px 20px; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-page">
+
+  <!-- LEFT: Image -->
+  <div class="login-image-side">
+    <div class="image-content">
+      <div class="brand">
+        <div class="brand-icon">❤️</div>
+        <div class="brand-name">Cardio<span>Sense</span> AI</div>
+      </div>
+      <h2 class="image-tagline">Know Your Heart.<br/>Before It's Too Late.</h2>
+      <p class="image-sub">AI-powered cardiovascular risk monitoring — instant, free and built for Ghanaians.</p>
+      <div class="image-stats">
+        <div class="stat-pill">🔒 Secure PIN Login</div>
+        <div class="stat-pill">⚡ Real-Time Results</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Form -->
+  <div class="login-form-side">
+    <div class="form-container">
+
+      <div class="form-header">
+        <h2 id="formTitle">Welcome back 👋</h2>
+        <p id="formSub">Login with your mobile number and 4-digit PIN</p>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" id="tabLogin"    onclick="showTab('login')">Login</button>
+        <button class="tab"        id="tabRegister" onclick="showTab('register')">Register</button>
+      </div>
+
+      <!-- LOGIN -->
+      <div id="loginForm">
+        <div class="field">
+          <label>📱 Mobile Number</label>
+          <input type="tel" id="loginMobile" placeholder="e.g. 0241234567" maxlength="10"/>
+        </div>
+
+        <div class="pin-field">
+          <label>🔐 Your 4-Digit PIN</label>
+          <div class="pin-dots">
+            <div class="pin-dot" id="ld0"></div>
+            <div class="pin-dot" id="ld1"></div>
+            <div class="pin-dot" id="ld2"></div>
+            <div class="pin-dot" id="ld3"></div>
+          </div>
+          <div class="pin-keypad">
+            <button class="pin-key" onclick="pinKey('login','1')">1</button>
+            <button class="pin-key" onclick="pinKey('login','2')">2</button>
+            <button class="pin-key" onclick="pinKey('login','3')">3</button>
+            <button class="pin-key" onclick="pinKey('login','4')">4</button>
+            <button class="pin-key" onclick="pinKey('login','5')">5</button>
+            <button class="pin-key" onclick="pinKey('login','6')">6</button>
+            <button class="pin-key" onclick="pinKey('login','7')">7</button>
+            <button class="pin-key" onclick="pinKey('login','8')">8</button>
+            <button class="pin-key" onclick="pinKey('login','9')">9</button>
+            <button class="pin-key zero" onclick="pinKey('login','0')">0</button>
+            <button class="pin-key del"  onclick="pinDel('login')">⌫</button>
+          </div>
+        </div>
+
+        <button class="btn" id="loginBtn" onclick="doLogin()">Login to CardioSense</button>
+        <div class="msg error"   id="loginError"></div>
+        <div class="msg success" id="loginSuccess"></div>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="registerForm" style="display:none">
+        <div class="field">
+          <label>📱 Mobile Number</label>
+          <input type="tel" id="regMobile" placeholder="e.g. 0241234567" maxlength="10"/>
+        </div>
+
+        <div class="pin-field">
+          <label>🔐 Create a 4-Digit PIN</label>
+          <div class="pin-dots">
+            <div class="pin-dot" id="rd0"></div>
+            <div class="pin-dot" id="rd1"></div>
+            <div class="pin-dot" id="rd2"></div>
+            <div class="pin-dot" id="rd3"></div>
+          </div>
+          <div class="pin-keypad">
+            <button class="pin-key" onclick="pinKey('reg','1')">1</button>
+            <button class="pin-key" onclick="pinKey('reg','2')">2</button>
+            <button class="pin-key" onclick="pinKey('reg','3')">3</button>
+            <button class="pin-key" onclick="pinKey('reg','4')">4</button>
+            <button class="pin-key" onclick="pinKey('reg','5')">5</button>
+            <button class="pin-key" onclick="pinKey('reg','6')">6</button>
+            <button class="pin-key" onclick="pinKey('reg','7')">7</button>
+            <button class="pin-key" onclick="pinKey('reg','8')">8</button>
+            <button class="pin-key" onclick="pinKey('reg','9')">9</button>
+            <button class="pin-key zero" onclick="pinKey('reg','0')">0</button>
+            <button class="pin-key del"  onclick="pinDel('reg')">⌫</button>
+          </div>
+        </div>
+
+        <div class="pin-field">
+          <label>🔐 Confirm PIN</label>
+          <div class="pin-dots">
+            <div class="pin-dot" id="rc0"></div>
+            <div class="pin-dot" id="rc1"></div>
+            <div class="pin-dot" id="rc2"></div>
+            <div class="pin-dot" id="rc3"></div>
+          </div>
+          <div class="pin-keypad">
+            <button class="pin-key" onclick="pinKey('regc','1')">1</button>
+            <button class="pin-key" onclick="pinKey('regc','2')">2</button>
+            <button class="pin-key" onclick="pinKey('regc','3')">3</button>
+            <button class="pin-key" onclick="pinKey('regc','4')">4</button>
+            <button class="pin-key" onclick="pinKey('regc','5')">5</button>
+            <button class="pin-key" onclick="pinKey('regc','6')">6</button>
+            <button class="pin-key" onclick="pinKey('regc','7')">7</button>
+            <button class="pin-key" onclick="pinKey('regc','8')">8</button>
+            <button class="pin-key" onclick="pinKey('regc','9')">9</button>
+            <button class="pin-key zero" onclick="pinKey('regc','0')">0</button>
+            <button class="pin-key del"  onclick="pinDel('regc')">⌫</button>
+          </div>
+        </div>
+
+        <button class="btn" id="registerBtn" onclick="doRegister()">Create Account</button>
+        <div class="msg error"   id="registerError"></div>
+        <div class="msg success" id="registerSuccess"></div>
+      </div>
+
+      <div class="form-footer">
+        CardioSense AI &mdash; Final Year Project &copy; 2025<br/>
+        For academic demonstration purposes only.
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ── PIN State ──
+  const pinState = { login: '', reg: '', regc: '' };
+
+  const dotMap = { login: 'ld', reg: 'rd', regc: 'rc' };
+
+  function pinKey(type, num) {
+    if (pinState[type].length >= 4) return;
+    pinState[type] += num;
+    updateDots(type);
+  }
+
+  function pinDel(type) {
+    pinState[type] = pinState[type].slice(0, -1);
+    updateDots(type);
+  }
+
+  function updateDots(type) {
+    const prefix = dotMap[type];
+    for (let i = 0; i < 4; i++) {
+      const dot = document.getElementById(prefix + i);
+      if (dot) dot.classList.toggle('filled', i < pinState[type].length);
+    }
+  }
+
+  function clearPin(type) {
+    pinState[type] = '';
+    updateDots(type);
+  }
+
+  // ── Tab Switch ──
+  function showTab(tab) {
+    document.getElementById('loginForm').style.display    = tab === 'login'    ? 'block' : 'none';
+    document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+    document.getElementById('tabLogin').classList.toggle('active',    tab === 'login');
+    document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+    document.getElementById('formTitle').textContent = tab === 'login'
+      ? 'Welcome back 👋' : 'Create account 🛡️';
+    document.getElementById('formSub').textContent = tab === 'login'
+      ? 'Login with your mobile number and 4-digit PIN'
+      : 'Register with your mobile number and a 4-digit PIN';
+    clearPin('login'); clearPin('reg'); clearPin('regc');
+    hideAllMessages();
+  }
+
+  function hideAllMessages() {
+    ['loginError','loginSuccess','registerError','registerSuccess'].forEach(id => {
+      document.getElementById(id).style.display = 'none';
+    });
+  }
+
+  function showMsg(id, msg) {
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  // ── LOGIN ──
+  async function doLogin() {
+    const mobile = document.getElementById('loginMobile').value.trim();
+    const pin    = pinState['login'];
+    const btn    = document.getElementById('loginBtn');
+
+    hideAllMessages();
+
+    if (!mobile) {
+      showMsg('loginError', '⚠ Please enter your mobile number.');
+      return;
+    }
+    if (pin.length < 4) {
+      showMsg('loginError', '⚠ Please enter your 4-digit PIN using the keypad.');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Logging in…';
+
+    try {
+      const res = await fetch('https://final-year-project-backend-q8cq.onrender.com/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mobile: mobile, password: pin })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        showMsg('loginError', '⚠ ' + (data.error || 'Login failed. Please try again.'));
+        clearPin('login');
+        return;
+      }
+
+      // Save user session
+      localStorage.setItem('hg_user_id', data.user_id);
+      localStorage.setItem('hg_mobile',  data.mobile);
+
+      showMsg('loginSuccess', '✅ Login successful! Redirecting…');
+
+      // Request notification permission
+      if ('Notification' in window) Notification.requestPermission();
+
+      // Redirect to main app
+      setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+
+    } catch (err) {
+      showMsg('loginError', '⚠ Cannot connect to server. Make sure Flask is running on port 5000.');
+      console.error('Login error:', err);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Login to CardioSense';
+    }
+  }
+
+  // ── REGISTER ──
+  async function doRegister() {
+    const mobile  = document.getElementById('regMobile').value.trim();
+    const pin     = pinState['reg'];
+    const confirm = pinState['regc'];
+    const btn     = document.getElementById('registerBtn');
+
+    hideAllMessages();
+
+    if (!mobile) {
+      showMsg('registerError', '⚠ Please enter your mobile number.');
+      return;
+    }
+    if (mobile.length !== 10 || isNaN(mobile)) {
+      showMsg('registerError', '⚠ Mobile number must be exactly 10 digits.');
+      return;
+    }
+    if (pin.length < 4) {
+      showMsg('registerError', '⚠ Please enter a 4-digit PIN using the keypad.');
+      return;
+    }
+    if (confirm.length < 4) {
+      showMsg('registerError', '⚠ Please confirm your PIN.');
+      return;
+    }
+    if (pin !== confirm) {
+      showMsg('registerError', '⚠ PINs do not match. Please try again.');
+      clearPin('reg');
+      clearPin('regc');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Creating account…';
+
+    try {
+      const res = await fetch('https://final-year-project-backend-q8cq.onrender.com/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mobile: mobile, password: pin })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        showMsg('registerError', '⚠ ' + (data.error || 'Registration failed.'));
+        return;
+      }
+
+      showMsg('registerSuccess', '✅ Account created! You can now login.');
+      clearPin('reg');
+      clearPin('regc');
+      setTimeout(() => showTab('login'), 2000);
+
+    } catch (err) {
+      showMsg('registerError', '⚠ Cannot connect to server. Make sure Flask is running on port 5000.');
+      console.error('Register error:', err);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Create Account';
+    }
+  }
+
+  // ── Auto redirect if already logged in ──
+  if (localStorage.getItem('hg_user_id')) {
+    window.location.href = 'index.html';
+  }
+
+  // ── Apply saved theme ──
+  const savedTheme = localStorage.getItem('hg_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+</script>
+
+</body>
+</html>
